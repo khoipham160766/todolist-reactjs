@@ -36,9 +36,9 @@ const Todos = () => {
         axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
         .then(response => {
             console.log(response);
-            settodosState(todosState.filter(todo=>{
+            settodosState([...todosState.filter(todo=>{
                     return todo.id !== id;
-            }))
+            })])
         });
     }
     const AddTodoButton = title => {
