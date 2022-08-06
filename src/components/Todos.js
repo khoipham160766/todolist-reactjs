@@ -1,14 +1,24 @@
-import React,{Fragment, useState} from "react";
+import React,{Fragment, useState, useEffect} from "react";
 import {v4 as uuidv4} from 'uuid';
+import axios from "axios";
 import TodoItem from "./TodoItem";
 import AddTodo from "./AddTodo";
 
 const Todos = () => {
     const [todosState, settodosState]=useState([]);
-    // const allTodos= [];
-    // for (let todo of todosState){
-    //     allTodos.push(<p>{todo}</p>);
-    // }
+    // Get request
+    // componentDidMount(){
+
+    // };
+    useEffect(()=>{
+        const config = {
+            params: {
+                _limit: 10
+            }
+        }
+        axios.get("https://jsonplaceholder.typicode.com/todos",config)
+        .then(response=>settodosState(response.data));
+    })
     const markComplete = id => {
         const newTodo= todosState.map(todo => {
             if(todo.id === id) todo.complete = !todo.complete;
@@ -17,18 +27,31 @@ const Todos = () => {
         settodosState(newTodo);
     };
     const deleteTodo = id => {
-        const newTodo = todosState.filter(todo => {
-            return todo.id !== id;
-        })
-        settodosState(newTodo);
+        // state array
+        // const newTodo = todosState.filter(todo => {
+        //     return todo.id !== id;
+        // })
+        // settodosState(newTodo);
+        console.log(id);
+        axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(response => {
+            console.log(response);
+            settodosState(todosState.filter(todo=>{
+                    return todo.id !== id;
+            }))
+        });
     }
     const AddTodoButton = title => {
-        const newTodo = [...todosState, {
-            id: uuidv4(),
+        const newTodo =  {
+            // id: uuidv4(),
             title,
             complete: false
-        }];
-        settodosState(newTodo);
+        };
+        axios.post("https://jsonplaceholder.typicode.com/todos", newTodo)
+        .then(response => {
+            console.log(response.data)
+            settodosState([...todosState, response.data])
+        })
     }
     return (
         <Fragment>

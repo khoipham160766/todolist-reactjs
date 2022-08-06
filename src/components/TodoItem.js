@@ -8,7 +8,7 @@ const TodoItem = props => {
         background: '#f4f4f4',
         padding: '10px',
         borderBottom: '1px #ccc dotted',
-        textDecoration: todo.complete ? 'line-through' : 'none',
+        textDecoration: todo.completed ? 'line-through' : 'none',
         marginLeft: '10px'
     }
     const deleteButtonStyle = {
@@ -25,7 +25,7 @@ const TodoItem = props => {
     }
     return (
        <p style={todoItemStyle}>
-           <input style={checkboxStyle} type='checkbox' onChange={markComplete.bind(this, todo.id)} checked={todo.complete}></input>
+           <input style={checkboxStyle} type='checkbox' onChange={markComplete.bind(this, todo.id)} checked={todo.completed}></input>
            {todo.title}
            <button style={deleteButtonStyle} onClick={DeleteTodo.bind(this, todo.id)}>Delete</button>
        </p>
